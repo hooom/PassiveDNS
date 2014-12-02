@@ -1,0 +1,35 @@
+{% extends "common/base.html" %}
+{% block content %}
+{% load common_fun %}
+
+<h3>域名依赖查询</h3>
+<form role="form" method="post" action="" id="search_form">
+  {% csrf_token %}
+  <div class="form-group col-lg-4">
+    <label for="">域名</label>
+    <input type="text" class="form-control" name="query_name" placeholder="输入域名" value={{query_name}}>
+    <button type="submit" class="btn btn-default">查询</button>
+  </div>
+</form>
+<table class="table table-bordered">
+  <thead>
+    <tr>
+	<th class="col-lg-2">域名</th>
+  <th>依赖</th>
+    </tr>
+  </thead>
+  <tbody>
+  
+    {% for ns,ns_ip in domain_dependence.items %}
+    <tr>
+      <td rowspan={{ns_ip|length}}>{{ns}}</td>
+    </tr>
+    {% for query_name,query_type in ns_ip %}
+    <tr>
+      <td>{{query_name}}------->{{query_type}}</td>
+    </tr>
+      {% endfor %}
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

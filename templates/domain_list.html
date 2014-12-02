@@ -1,0 +1,52 @@
+{% extends "common/base.html" %}
+{% block content %}
+<h3>域名列表<span class="badge">{{total}}</span></h3>
+<table class="table">
+    <tr>
+      <th>域名</th><th>查询类型</th><th>查询总次数</th>
+    </tr>
+    {% for domain in domain_list %}
+    <tr>
+      <td>{{domain.query_name}}</td>
+      {% if domain.query_type == "1" %}
+      <td>A</td>
+      {% elif domain.query_type == "2" %}
+      <td>NS</td>
+      {% elif domain.query_type == "5" %}
+      <td>CNAME</td>
+      {% elif domain.query_type == "12" %}
+      <td>PTR</td>
+      {% elif domain.query_type == "16" %}
+      <td>TXT</td>
+      {% elif domain.query_type == "28" %}
+      <td>AAAA</td>
+      {% else %}
+      <td>{{domain.query_type}}</td>
+      {% endif %}
+
+      <td>{{domain.total}}</td>
+    </tr>
+    {% endfor %}
+</table>
+<p>
+<!--
+{% for page_number in domain_list.paginator.page_range_ext %}
+    {% ifequal page_number  domain_list.number %}
+        {{ page_number }}
+    {% else %}
+        <a href="?page={{ page_number }}">{{ page_number }}</a>
+    {% endifequal %}
+{% endfor %}
+-->
+
+{% if domain_list.has_previous %}
+    <a href="?page={{domain_list.previous_page_number}}">prev</a>
+{% endif %}
+    Page {{domain_list.number}} of {{domain_list.paginator.num_pages}}
+{% if domain_list.has_next %}
+    <a href="?page={{domain_list.next_page_number}}">next</a>
+{% endif %}
+</p>
+
+
+{% endblock %}

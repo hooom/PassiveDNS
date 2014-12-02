@@ -1,0 +1,65 @@
+{% extends "common/base.html" %}
+{% load chartkick %}
+{% load static %}
+{% block content %}
+       <br/>
+       <br/>
+       <br/>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+         <script src="http://code.highcharts.com/highcharts.js"></script>
+          <script src="{% static 'js/chartkick.js' %}"></script> 
+        <script type="text/javascript" src="{% static 'js/boostrap-daterangepicker-zh_CN.js' %}"></script>
+         <script type="text/javascript" src="{% static 'js/date.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/bootstrap.js' %}"></script>
+        <div class="well well-small">
+           <form class="form-horizontal" role="form" action="" method="post">
+                {% csrf_token %} 
+                <div class="control-group">
+                    <div class="control-label">菜单效果</div>
+                    <div class="controls">
+                        <div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc" class="pull-left">
+                            <i class="icon-calendar"> </i>
+                            <span id="reportrange-inner"></span>
+                            <input type="hidden" name="reportrange" id="reportrange-input">
+                            <b class="caret" style="margin-top: 8px;"> </b>
+                        </div>
+                    </div>
+                </div>
+            </form>
+          <div class="row">
+            <div class="col-15 col-sm-15 col-lg-9">
+                {% line_chart data with width='1000px'%}
+            </div><!--/span-->
+          </div><!--/row-->
+            
+<script type="text/javascript">
+                $(document).ready(function() {
+
+                    $("#reportrange")
+                        .daterangepicker({
+                                format: "yyyy/MM/dd hh",
+                                ranges: {
+                                    '今日': ['today', 'today'],
+                                    '昨日': ['yesterday', 'yesterday'],
+                                    '本月': [Date.today().moveToFirstDayOfMonth(), Date.today().moveToLastDayOfMonth()],
+                                    '今日开始到本周五': [Date.today(), Date.today().next().friday()],
+                                    '今日开始的一周': ['today', Date.today().add( {days: 7} )],
+                                    '今日到本月末尾': ['today', Date.today().moveToLastDayOfMonth()]
+                                },
+                                startDate: "2014/01/08 00",
+                                endDate: "2014/03/07 07"
+                            }, function(startDate, endDate) {
+                                var range = startDate.toString("yyyy/MM/dd hh") + " - " + endDate.toString("yyyy/MM/dd h");
+                                $("#reportrange #reportrange-inner").html(range);
+                                $("#reportrange #reportrange-input").val(range);
+                                $("#reportrange #reportrange-input").disable(False);
+                            }
+                        );
+
+                    $("#reportrange #reportrange-inner").html("2014/01/08 00 - 2014/03/07 07");
+                });
+            </script>
+</div>
+
+
+{% endblock %}

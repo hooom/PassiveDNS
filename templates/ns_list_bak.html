@@ -1,0 +1,25 @@
+{% extends "common/base.html" %}
+{% block content %}
+<h3>域名服务器列表<span class="badge">{{total}}</span></h3>
+
+<table class="table">
+  <tr><th>域名服务器地址</th></tr>
+  {% for ns in ns_list %}
+  <tr>
+    <td>
+      {{ns.ns_ip}}
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+<p>
+{% for page_number in ns_list.paginator.page_range %}
+    {% ifequal page_number  ns_list.number %}
+        {{ page_number }}
+    {% else %}
+        <a href="?page={{ page_number }}">{{ page_number }}</a>
+    {% endifequal %}
+{% endfor %}
+</p>
+
+{% endblock %}

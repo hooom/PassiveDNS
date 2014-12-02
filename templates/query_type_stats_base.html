@@ -1,0 +1,32 @@
+{% extends "common/base.html" %}
+{% block content %}
+{% load common_fun %}
+<br/>
+<br/> 
+<br/> 
+<br/> 
+<br/> 
+<div class="row row-offcanvas row-offcanvas-right">
+        
+        <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
+          <div class="list-group">
+            <a href="#" class="list-group-item active">所有记录类型响应数量</a>
+            <a href="#" class="list-group-item">Link</a>
+            <a href="#" class="list-group-item">Link</a>
+            <a href="#" class="list-group-item">Link</a>
+            <a href="#" class="list-group-item">Link</a>
+            <a href="#" class="list-group-item">Link</a>
+            <a href="#" class="list-group-item">Link</a>
+            <a href="#" class="list-group-item">Link</a>
+            <a href="#" class="list-group-item">Link</a>
+            <a href="#" class="list-group-item">Link</a>
+          </div>
+        </div>        
+
+        <div class="col-xs-12 col-sm-9">
+        {% block query_type_content %}{% endblock %}  
+        </div><!--/span-->
+
+      </div>
+
+{% endblock %}

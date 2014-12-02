@@ -1,0 +1,54 @@
+{% extends "common/base.html" %}
+{% load chartkick %}
+{% load static %}
+{% load common_fun %}
+{% block content %}
+<br />
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Second Domain</th>
+            <th>Type</th>
+            <th>Domain</th>
+            <th>Start Time</th>
+            <th>End Time</th>
+            <th>Count</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for k1,v1 in domain_dict.items %}
+            <tr>
+                <td rowspan="{{v1.items | arr_length}}">{{k1|getDomain}}</td>
+                {% if k1|getType == '1' %}
+                    <td rowspan="{{v1.items | arr_length}}">A</td>
+                {% endif %}
+                {% if k1|getType == '2' %}
+                    <td rowspan="{{v1.items | arr_length}}">NS</td>
+                {% endif %}
+                {% if k1|getType == '5' %}
+                    <td rowspan="{{v1.items | arr_length}}">CNAME</td>
+                {% endif %}
+                {% if k1|getType == '12' %}
+                    <td rowspan="{{v1.items | arr_length}}">PTR</td>
+                {% endif %}
+                {% if k1|getType == '16' %}
+                    <td rowspan="{{v1.items | arr_length}}">TXT</td>
+                {% endif %}
+                {% if k1|getType == '28' %}
+                    <td rowspan="{{v1.items | arr_length}}">AAAA</td>
+                {% endif %}
+            </tr>
+            {% for k2,v2 in v1.items %}
+                <tr>
+                    {% if not k2 == 'ICP' %}
+                    <td>{{k2}}</td>
+                    <td>{{ v2.first|str_time }}</td>
+                    <td>{{ v2.last|str_time }}</td>
+                    <td>{{ v2.count  }}</td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

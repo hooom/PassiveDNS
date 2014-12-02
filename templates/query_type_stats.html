@@ -1,0 +1,97 @@
+{% extends "common/base.html" %}
+{% load chartkick %}
+{% load static %}
+{% block content %}
+<br />
+        <script src="{% static 'js/jquery.min.js' %}"></script> 
+        <script src="http://code.highcharts.com/highcharts.js"></script>
+        <!--<script src="{% static 'js/jsapi.js' %}"></script>-->
+        <script src="{% static 'js/chartkick.js' %}"></script> 
+        <script type="text/javascript" src="{% static 'js/bootstrap-datetimepicker.min.js' %}"></script>
+       
+        <legend>DNS Monitor</legend> 
+        <form class="form-horizontal" role="form" action="" method="post">
+        {% csrf_token %}
+        <label>
+        <label width="100px">开始时间
+        <span class="input-append date start_datetime" data-date="2014-01-07T00:25:00Z">
+                <input type="text" name="start_time" value="{{start_time}}" readonly>
+                <span class="add-on"><i class="icon-remove"></i></span>
+                <span class="add-on"><i class="icon-calendar"></i></span>
+        </span></label>
+        <label width="100px">结束时间
+        <span class="input-append date end_datetime" data-date="2014-01-07T00:25:00Z">
+                 <input type="text" name="end_time"  value="{{end_time}}" readonly>
+                <span class="add-on"><i class="icon-remove"></i></span>
+                <span class="add-on"><i class="icon-calendar"></i></span>
+        </span></label>
+        <input class="btn btn-primary" type="submit" value="查询"/>
+        </label>
+        </form>
+        <form class="form-horizontal" role="form" action="{% url 'domain_detail' %}" method="post">
+            {% if second_domains_a %}
+            {% csrf_token %}
+            <input type="hidden" name="start_time" value="{{start_time}}" />
+            <input type="hidden" name="end_time" value="{{end_time}}" />
+            <input type="hidden" name="second_domains_a" value="{{second_domains_a}}" />
+            <input class="" type="submit" value="查看详情" />
+            {% endif %}
+        </form>
+        
+          <div class="row">
+            <div class="span8" >
+                <label class="label label-info">Record Type Response Number</label>
+                {% line_chart lines_data with height='210px' %}
+            </div><!--/span-->
+            <div class="span4">
+                <label class="label label-info">Record Type Total Response Number</label> 
+              {% pie_chart column_data with height='210px' %}
+            </div><!--/span-->
+            <div class="span6">
+                <label class="label label-info">Top 20 Domain Name Response Number For A</label> 
+            {% bar_chart column_data_count_a with height='330px' %}
+            </div><!--/span-->
+            <div class="span6">
+                <label class="label label-info">Top 20 Domain Name's Subdomain Number For A</label> 
+                {% bar_chart column_data_subdomain_a with height='330px' %}
+            </div><!--/span-->
+            <div class="span6">
+                <label class="label label-info">Top 20 Domain Name Response Number For NS</label>
+                {% bar_chart column_data_count_ns with height='330px' %}
+            </div><!--/span-->
+            <div class="span6">
+                <label class="label label-info">Top 20 Domain Name's Subdomain Number For NS</label>
+                {% bar_chart column_data_subdomain_ns with height='330px' %}
+            </div><!--/span-->
+            <div class="span6">
+                <label class="label label-info">Top 20 Domain Name Response Number For CNAME</label>
+                {% bar_chart column_data_count_cname with height='330px' %}
+            </div><!--/span-->
+            <div class="span6">
+                <label class="label label-info">Top 20 Domain Name's Subdomain Number For CNAME</label>
+                {% bar_chart column_data_subdomain_cname with height='330px' %}
+            </div><!--/span-->
+          </div><!--/row-->
+            
+<script type="text/javascript">
+
+$(".start_datetime").datetimepicker({
+        format: "yyyy/mm/dd - hh:ii",
+        autoclose: true,
+        todayBtn: true,
+        startDate: "2014-01-07 10:00",
+        minuteStep: 60
+    });
+
+$(".end_datetime").datetimepicker({
+          format: "yyyy/mm/dd - hh:ii",
+          autoclose: true,
+          todayBtn: true,
+          startDate: "2014-01-07 10:00",
+        minuteStep: 60
+     });
+ </script>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "common/base.html" %}
+{% load chartkick %}
+{% load static %}
+{% block content %}
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>-->
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="http://code.highcharts.com/highcharts.js"></script>
+<script src="{% static 'js/chartkick.js' %}"></script>
+
+<div class="row">
+     <div class="span3 bs-docs-sidebar">
+        <ul class="nav nav-list bs-docs-sidenav affix">
+        {% for domain_name in domain_names %}
+            <li><a href="?domain_name={{domain_name}}">{{domain_name}}</a></li>
+        {% endfor %}
+        </ul>
+    </div>
+    <div class="span9">
+        {% line_chart lines_data %}
+    </div><!--/span-->
+
+</div>
+{% endblock %}

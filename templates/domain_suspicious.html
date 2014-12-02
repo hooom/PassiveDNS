@@ -1,0 +1,68 @@
+{% extends "common/base.html" %}
+{% block content %}
+{% load common_fun %}
+<h3><可疑域名统计<span class="badge">{{total}}</span></h3>
+<table class="table table-bordered">
+  <thead>
+    <tr>
+	<th class="col-lg-2">域名</th>
+	<th>查询类型</th>
+	<th>查询次数</th>
+	<th>值</th>
+	<th>域名服务器</th>
+	<th>TTL</th>
+	<th>第一次看到时间</th>
+	<th>最后一次看到时间</th>
+	<th>出现次数</th>
+	<th>来源</th>
+    </tr>
+  </thead>
+  <tbody>
+  
+    {% for query in query_list_new %}
+    <tr>
+      <td rowspan="{{query.values | arr_length}}">{{query.query_name}}</td>
+
+      {% if query.query_type == '1' %}
+      <td rowspan="{{query.values | arr_length}}">A</td>
+      {% elif query.query_type == '2' %}
+      <td rowspan="{{query.values | arr_length}}">NS</td>
+      {% elif query.query_type == '5' %}
+      <td rowspan="{{query.values | arr_length}}">CNAME</td>
+      {% elif query.query_type == '12' %}
+      <td rowspan="{{query.values | arr_length}}">PTR</td>
+      {% elif query.query_type == '16' %}
+      <td rowspan="{{query.values | arr_length}}">TXT</td>
+      {% elif query.query_type == '28' %}
+      <td rowspan="{{query.values | arr_length}}">AAAA</td>
+      {% else %}
+      <td rowspan="{{query.values | arr_length}}">{{query.query_type}}</td>
+      {% endif %}
+
+      <td rowspan="{{query.values | arr_length}}">{{query.total}}</td>
+    </tr>
+    {% for item in  query.values %}
+    <tr>
+            <td>{{item.value}}</td>
+            <td>{{item.ns_ip}}</td>
+            <td>{{item.ttl}}</td>
+            <td>{{item.first_seen|str_time}}</td>
+            <td>{{item.last_seen|str_time}}</td>
+            <td>{{item.count}}</td>
+            <td>{{item.sensor}}</td>
+    </tr>
+    {% endfor %}
+    {% endfor %}
+  </tbody>
+</table>
+<p>
+
+{% for page_number in query_list.paginator.page_range %}
+{% ifequal page_number query_list.number %}
+{{page_number}}
+{% else %}
+ <a href="?page={{page_number}}">{{ page_number }}</a>
+{% endifequal%}
+{% endfor %}
+</p>
+{% endblock %}

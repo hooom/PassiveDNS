@@ -1,0 +1,89 @@
+{% extends "common/base.html" %}
+{% load chartkick %}
+{% load static %}
+{% block content %}
+
+<!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>-->
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="http://code.highcharts.com/highcharts.js"></script>
+<script src="{% static 'js/chartkick.js' %}"></script>
+<legend>Base Statistics</legend>
+<div class="row">
+     <div class="span6">
+        <label class="label label-info">TTL Distribution</label>
+        {% bar_chart ttl with height='330px' %}
+     </div>
+     <div class="span6">
+        <label class="label label-info">TOP IP Map</label>
+        {% bar_chart ipmap with height='330px' %}
+     </div><!--/span-->
+     <div class="span6">
+       <label class="label label-info">Record Type Response Number</label>
+       <table class="table table-bordered">
+         <thead>
+              <tr>
+                  <th>Record Type</th>
+                  <th>Record Number</th>
+                  <th>Rate %</th>
+              </tr>
+         </thead>
+         <tbody>
+            {% for item in recordType %}
+                <tr>
+                    {% for temp in item %}
+                    <td>{{temp}}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+         </tbody>
+       </table> 
+     </div>
+     <div class="span6">
+         <label class="label label-info">Top Domain Dependency</label>
+         <table class="table table-bordered">
+             <thead>
+                 <tr>
+                     <th>#</th>
+                     <th>Domain</th>
+                     <th>Dependency Number</th>
+                     <th>Rate %</th>
+                     <th>Domain Admin</th>
+                 </tr>
+             </thead>
+             <tbody>
+                 {% for item in dependency %}
+                     <tr>
+                         {% for temp in item %}
+                         <td>{{temp}}</td>
+                         {% endfor %}
+                     </tr>
+                 {% endfor %}
+             </tbody>
+         </table>
+     </div>
+     <div class="span12">
+       <label class="label label-info">Top 20 Domain</label>
+       <table class="table table-bordered">
+          <thead>
+              <tr>
+                  <th>Domain</th>
+                  <th>Response Number</th>
+                  <th>Sub Domain Number</th>
+                  <th>During Hours</th>
+                  <th>Current Status</th>
+              </tr>
+          </thead>
+          <tbody>
+              {% for item in topdomain %}
+                  <tr>
+                      {% for temp in item %}
+                      <td>{{temp}}</td>
+                      {% endfor %}
+                  </tr>
+              {% endfor %}
+          </tbody>
+        </table>
+     </div>
+</div>
+
+{% endblock %}

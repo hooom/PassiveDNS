@@ -1,0 +1,51 @@
+{% extends "common/base.html" %}
+{% block content %}
+{% load common_fun %}
+<h3>无备案的网站  <span class="badge">{{total}}</span></h3>
+<table class="table table-bordered">
+  <thead>
+    <tr>
+	<th class="col-lg-2">域名</th>
+    <th>查询类型</th>
+    <th>TTL</th>
+	<th>类型</th>
+    <th>当前状态</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in query_list %}
+    <tr>
+      <td>{{item.query_name}}</td>
+        {% if item.query_type == '1' %}
+      <td>A</td>
+       {% elif item.query_type == '2' %}
+      <td>NS</td>
+       {% elif item.query_type == '5' %}
+        <td>CNAME</td>
+        {% elif item.query_type == '12' %}
+        <td>PTR</td>
+        {% elif item.query_type == '16' %}
+        <td>TXT</td>
+        {% elif item.query_type == '28' %}
+        <td>AAAA</td>
+        {% else %}
+        <td>{{item.query_type}}</td>
+        {% endif %}
+      <td>{{item.ttl}}</td>
+      <td>{{item.type}}</td>
+      <td>{{item.status}}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<p>
+
+{% for page_number in query_list.paginator.page_range %}
+{% ifequal page_number query_list.number %}
+{{page_number}}
+{% else %}
+ <a href="?page={{page_number}}">{{ page_number }}</a>
+{% endifequal%}
+{% endfor %}
+</p>
+{% endblock %}
